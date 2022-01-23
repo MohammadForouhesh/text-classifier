@@ -1,22 +1,5 @@
 import pandas as pd
-import re
-from sklearn.utils import shuffle
-from sklearn.feature_extraction.text import TfidfVectorizer
-from sklearn.feature_extraction.text import CountVectorizer
-import numpy as np
-from sklearn.model_selection import train_test_split
-from sklearn.preprocessing import MinMaxScaler
-from sklearn.pipeline import Pipeline
-from sklearn.ensemble import  RandomForestClassifier
-from sklearn.linear_model import LogisticRegression
-from xgboost import XGBClassifier
-from sklearn.model_selection import GridSearchCV
-from sklearn.metrics import confusion_matrix
-from sklearn.metrics import classification_report
 from tqdm import tqdm
-import time
-
-from feature_engineering import HandCraftEmbedding
 from xgb_clf import XgbClf
 
 tqdm.pandas()
@@ -34,7 +17,7 @@ def main(dataframe: pd.DataFrame, save_path: str):
 
 
 if __name__ == '__main__':
-    df = pd.read_excel('vacine_sampling.xlsx')
-    main(df, 'vaccine')
+    df = pd.read_excel('internet_sampling.xlsx')
+    main(df, 'filtering')
     print(df.text[3])
-    print(inference_pipeline('vaccine', df.text[3]))
+    print(inference_pipeline('filtering', df.text[3]))
