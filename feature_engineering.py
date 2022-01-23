@@ -1,10 +1,8 @@
-import pandas as pd
-import re
-from sklearn.utils import shuffle
-from sklearn.feature_extraction.text import TfidfVectorizer
-from sklearn.feature_extraction.text import CountVectorizer
-import numpy as np
 import pickle
+import numpy as np
+import pandas as pd
+from sklearn.feature_extraction.text import CountVectorizer
+from sklearn.feature_extraction.text import TfidfVectorizer
 
 
 class HandCraftEmbedding():
