@@ -3,3 +3,4 @@
 *.pyc
 *.xml
 *.iml
+.DS_Store
