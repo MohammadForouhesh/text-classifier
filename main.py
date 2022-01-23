@@ -28,13 +28,13 @@ def inference_pipeline(model_path: str, input_text: str):
 
 
 def main(dataframe: pd.DataFrame, save_path: str):
-    xgb = XgbClf(dataframe.text, dataframe.label)
+    xgb = XgbClf(text_array=dataframe.text, labels=dataframe.label)
     xgb.build()
     xgb.save_model(save_path)
 
 
 if __name__ == '__main__':
-    df = pd.read_excel('jcpoa_sampling.xlsx')
-    # main(df, 'jcpoa')
+    df = pd.read_excel('vacine_sampling.xlsx')
+    main(df, 'vaccine')
     print(df.text[3])
-    print(inference_pipeline('jcpoa', df.text[3]))
+    print(inference_pipeline('vaccine', df.text[3]))
