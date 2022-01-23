@@ -31,6 +31,8 @@ class XgbClf():
         self.scaler = None
         if load_path is not None: self.load_model(load_path)
         else:
+            assert text_array is not None and labels is not None
+            text_array.fillna('', inplace=True)
             self.emb = HandCraftEmbedding(text_array)
 
             encoded = list(map(self.emb.encode, tqdm(text_array)))
