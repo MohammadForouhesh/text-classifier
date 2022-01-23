@@ -8,7 +8,15 @@ import pickle
 
 
 class HandCraftEmbedding():
-    def __init__(self, text_series: pd.Series):
+    def __init__(self, text_series=None):
+        self.text_series = None
+        self.hashtags_transformation = None
+        self.tf_idf_transformation = None
+        self.bigram_transformation = None
+
+        if text_series is not None: self.__init(text_series)
+
+    def __init(self, text_series: pd.Series):
         self.text_series = text_series.fillna('')
         self.hashtags_transformation = self.count_hashtags()
         self.tf_idf_transformation = self.tf_idf_transformer()
