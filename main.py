@@ -28,28 +28,13 @@ def inference_pipeline(model_path: str, input_text: str):
 
 
 def main(dataframe: pd.DataFrame, save_path: str):
-    # emb_model = HandCraftEmbedding(dataframe['text'])
-    # X = list(dataframe['text'].progress_apply(emb_model.encode))
-    # y = list(dataframe['label'])
-    # scaler = prep_scaler(X)
-    # X = scaler.transform(X)
-    # X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42, stratify=y)
-    #
-    # xgboost_clf = XGBClassifier(n_estimators=300)
-    # # xgboost_clf.load_model('exchange_model.json')
-    # xgboost_clf.fit(X_train, y_train)
-    # xgboost_clf.score(X_test, y_test)
-    # # xgboost_clf.predict(X_test[0])
-    # print(classification_report(y_test, xgboost_clf.predict(X_test)))
-    # xgboost_clf.save_model(save_path+'_model.json')
     xgb = XgbClf(dataframe.text, dataframe.label)
     xgb.build()
-    xgb.save_model('jcpoa')
-    xgb.load_model('jcpoa')
-    print(xgb.inference('llll'))
+    xgb.save_model(save_path)
 
 
-df = pd.read_excel('jcpoa_sampling.xlsx')
-# main(df, 'jcpoa')
-print(df.text[0])
-inference_pipeline('jcpoa', df.text[0])
+if __name__ == '__main__':
+    df = pd.read_excel('jcpoa_sampling.xlsx')
+    # main(df, 'jcpoa')
+    print(df.text[3])
+    print(inference_pipeline('jcpoa', df.text[3]))
