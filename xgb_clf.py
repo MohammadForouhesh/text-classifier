@@ -23,12 +23,11 @@ from feature_engineering import HandCraftEmbedding
 
 
 class XgbClf():
-    def __init__(self, text_array: list, labels: list, load_path: str = None):
-        assert len(text_array) != 0
+    def __init__(self, text_array: list = None, labels: list = None, load_path: str = None):
         if not isinstance(text_array, pd.Series): text_array = pd.Series(text_array)
 
         self.xgb = XGBClassifier(n_estimators=300)
-        self.emb = None
+        self.emb = HandCraftEmbedding()
         self.scaler = None
         if load_path is not None: self.load_model(load_path)
         else:
