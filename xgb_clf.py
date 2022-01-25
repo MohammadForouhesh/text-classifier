@@ -37,6 +37,9 @@ class XgbClf():
                                                             random_state=42, stratify=self.labels)
         self.xgb.fit(X_train, y_train)
         self.xgb.score(X_test, y_test)
+        print('============================trian============================')
+        print(classification_report(y_train, self.xgb.predict(X_train)))
+        print('=============================test============================')
         print(classification_report(y_test, self.xgb.predict(X_test)))
         return self.xgb
 
