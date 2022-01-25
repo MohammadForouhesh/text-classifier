@@ -17,7 +17,7 @@ def main(dataframe: pd.DataFrame, save_path: str):
 
 
 if __name__ == '__main__':
-    df = pd.read_excel('vacine_sampling.xlsx')
-    main(df, 'vaccine')
+    df = pd.read_excel('welfare.xlsx')
+    main(df, 'welfare')
     print(df.text[3])
-    print(inference_pipeline('vaccine', df.text[3]))
+    print(inference_pipeline('welfare', df.text[3]))
