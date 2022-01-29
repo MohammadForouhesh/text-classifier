@@ -41,6 +41,8 @@ class XgbClf():
         print(classification_report(y_train, self.xgb.predict(X_train)))
         print('=============================test============================')
         print(classification_report(y_test, self.xgb.predict(X_test)))
+        print('=========================proba=test==========================')
+        print(classification_report(y_test, self.predict_proba(X_test)))
         return self.xgb
 
     def load_model(self, load_path: str):
@@ -61,3 +63,10 @@ class XgbClf():
     def inference(self, input_text: str):
         vector = self.scaler.transform(self.emb.encode(input_text).reshape(1, -1))
         return self.xgb.predict(vector)[0]
+
+    def inference_proba(self, input_text: str):
+        vector = self.scaler.transform(self.emb.encode(input_text).reshape(1, -1))
+        return 1 if self.xgb.predict_proba(vector)[0][1] >= 0.70 else 0
+
+    def predict_proba(self, array):
+        return list(map(int, self.xgb.predict_proba(array)[:, 1] >= 0.70))
