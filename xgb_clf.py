@@ -10,40 +10,36 @@ from sklearn.model_selection import train_test_split
 
 
 class XgbClf():
-    def __init__(self, text_array: list = None, labels: list = None, load_path: str = None):
+    def __init__(self, text_array: list = None, load_path: str = None):
         if not isinstance(text_array, pd.Series): text_array = pd.Series(text_array)
 
-        self.xgb = XGBClassifier(n_estimators=300)
+        self.xgb = XGBClassifier(n_estimators=250)
         self.emb = HandCraftEmbedding()
         self.scaler = None
         if load_path is not None: self.load_model(load_path)
         else:
-            assert text_array is not None and labels is not None
+            assert text_array is not None
             text_array.fillna('', inplace=True)
             self.emb = HandCraftEmbedding(text_array)
-
-            encoded = list(map(self.emb.encode, tqdm(text_array)))
-            self.labels = list(labels)
-            self.scaler = self.prep_scaler(encoded)
-            self.encoded_input = self.scaler.transform(encoded)
 
     def prep_scaler(self, encoded):
         scaler = MinMaxScaler()
         scaler.fit(encoded)
         return scaler
 
-    def build(self):
-        X_train, X_test, y_train, y_test = train_test_split(self.encoded_input, self.labels, test_size=0.2,
-                                                            random_state=42, stratify=self.labels)
-        self.xgb.fit(X_train, y_train)
-        self.xgb.score(X_test, y_test)
+    def fit(self, X_train, y_train):
+        encoded = list(map(self.emb.encode, X_train))
+        self.scaler = self.prep_scaler(encoded)
+        self.xgb.fit(self.scaler.transform(encoded), list(y_train))
         print('============================trian============================')
-        print(classification_report(y_train, self.xgb.predict(X_train)))
-        print('=============================test============================')
-        print(classification_report(y_test, self.xgb.predict(X_test)))
-        print('=========================proba=test==========================')
-        print(classification_report(y_test, self.predict_proba(X_test)))
+        print(classification_report(y_train, self.xgb.predict(self.scaler.transform(encoded))))
         return self.xgb
+
+    def predict(self, X_test, y_test):
+        encoded = list(map(self.emb.encode, X_test))
+        print('score: ', self.xgb.score(self.scaler.transform(encoded), list(y_test)))
+        print('=============================test============================')
+        print(classification_report(y_test, self.xgb.predict(self.scaler.transform(encoded))))
 
     def load_model(self, load_path: str):
         loading_prep = lambda string: f'model_dir/{load_path}/{string}'
