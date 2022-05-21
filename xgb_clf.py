@@ -27,10 +27,11 @@ class XgbClf():
         scaler.fit(encoded)
         return scaler
 
-    def fit(self, X_train, y_train):
+    def fit(self, X_train, y_train, X_eval, y_eval):
         encoded = list(map(self.emb.encode, X_train))
+        enc_eval = list(map(self.emb.encode, X_eval))
         self.scaler = self.prep_scaler(encoded)
-        self.xgb.fit(self.scaler.transform(encoded), list(y_train))
+        self.xgb.fit(self.scaler.transform(encoded), list(y_train), eval_set=[(self.scaler.transform(enc_eval), list(y_eval))])
         print('============================trian============================')
         print(classification_report(y_train, self.xgb.predict(self.scaler.transform(encoded))))
         return self.xgb
