@@ -4,6 +4,7 @@ import pandas as pd
 from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.feature_extraction.text import TfidfVectorizer
 
+from crf_pos.pos_tagger.wapiti import WapitiPosTagger
 
 class HandCraftEmbedding():
     def __init__(self, text_series=None):
@@ -11,6 +12,7 @@ class HandCraftEmbedding():
         self.hashtags_transformation = None
         self.tf_idf_transformation = None
         self.bigram_transformation = None
+        self.pos_tagger = WapitiPosTagger()
 
         if text_series is not None: self.__init(text_series)
 
@@ -39,8 +41,13 @@ class HandCraftEmbedding():
         bigram_transformer = CountVectorizer(encoding='utf-8', min_df=3, max_features=300,
                                              ngram_range=(1, 2)).fit(self.text_series.ravel())
         return bigram_transformer
+    
+    def extract_pos(self, text: str, tag: str = 'N') -> str:
+        tagged = self.pos_tagger(text)
+        return ' '.join([item[0] for item in tagged if item[1] == tag])
 
     def __getitem__(self, text: str) -> np.ndarray:
+        # text = self.extract_pos(text, tag='N')
         hashtag_vector = self.hashtags_transformation.transform([text]).toarray()[0]
         tf_idf_vector  = self.tf_idf_transformation.transform([text]).toarray()[0]
         bigram_vector  = self.bigram_transformation.transform([text]).toarray()[0]
