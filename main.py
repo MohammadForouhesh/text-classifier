@@ -22,9 +22,9 @@ def main(dataframe: pd.DataFrame, save_path: str):
 
 
 if __name__ == '__main__':
-    df = pd.read_excel('tweet-zare-relabeled.xlsx').sample(388)
-    df['label'] = df['polarity-f'].apply(lambda item: int(item == 'positive'))
-    main(df, 'crypto')
+    df = pd.read_csv('RelevantTag.csv')
+    df.rename(columns={'content': 'text', 'Irelevant': 'label'})
+    main(df, 'arnika')
     # print(df.text[3])
     # xgb = XgbClf(text_array=None, labels=None, load_path='politics')
     # preds = df.text.progress_apply(lambda item: xgb.inference_proba(item))
