@@ -6,3 +6,4 @@
 .DS_Store
 model_dir/*
 .idea/*
+*.csv
