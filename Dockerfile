@@ -5,6 +5,4 @@ COPY /requirements.txt /usr/app/
 RUN pip install --no-cache-dir -r requirements.txt
 COPY . /usr/app/
 
-RUN python setup.py install
-
 CMD ["python", "main.py"]
